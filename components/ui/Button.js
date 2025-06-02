@@ -2,7 +2,7 @@ export default function Button({
   children,
   onClick,
   type = 'button',
-  variant = 'primary', // primary, secondary, danger, neutral
+  variant = 'primary', // primary, secondary, danger, neutral, outline
   size = 'medium', // small, medium, large
   disabled = false,
   fullWidth = false,
@@ -11,12 +11,13 @@ export default function Button({
 }) {
   const baseStyles = 'font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition ease-in-out duration-150';
   
+  // Updated variantStyles to include gradients
   const variantStyles = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 border border-transparent',
-    secondary: 'bg-pink-500 text-white hover:bg-pink-600 focus:ring-pink-500 border border-transparent',
-    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 border border-transparent',
+    primary: 'bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 focus:ring-blue-500 border border-transparent',
+    secondary: 'bg-gradient-to-r from-pink-500 to-pink-700 text-white hover:from-pink-600 hover:to-pink-800 focus:ring-pink-500 border border-transparent',
+    danger: 'bg-gradient-to-r from-red-500 to-red-700 text-white hover:from-red-600 hover:to-red-800 focus:ring-red-500 border border-transparent',
     neutral: 'bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-400 border border-gray-300',
-    outline: 'bg-white text-blue-600 border border-blue-600 hover:bg-blue-50 focus:ring-blue-500',
+    outline: 'bg-white text-blue-600 border border-blue-600 hover:bg-blue-50 hover:text-blue-700 focus:ring-blue-500',
   };
 
   const sizeStyles = {
