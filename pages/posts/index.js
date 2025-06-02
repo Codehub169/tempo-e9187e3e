@@ -1,53 +1,54 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router'; // Added for potential redirection
+import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import Button from '@/components/ui/Button';
 import PostListItem from '@/components/posts/PostListItem';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
-// import { useSession, getSession } from 'next-auth/react'; // Example for session handling
+// import { useSession } from 'next-auth/react'; // Example for session handling
 
 export default function PostsPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const router = useRouter(); // Added for potential redirection
+  const router = useRouter();
 
   // Example: const { data: session, status } = useSession();
-  // useEffect(() => {
-  //   const checkSession = async () => {
-  //     const session = await getSession(); // Or use useSession hook
-  //     if (!session) {
-  //       router.push('/login');
-  //     }
-  //   };
-  //   checkSession();
-  // }, [router]);
+  // const isAuthenticated = status === 'authenticated'; // Example check
+
+  const fetchPosts = useCallback(async () => {
+    // if (!isAuthenticated && status !== 'loading') { // Example: Don't fetch if not auth and not loading session
+    //   router.push('/login');
+    //   return;
+    // }
+    // if (!isAuthenticated) return; // Example: Wait for auth
+
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('/api/posts');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: 'Failed to parse error response.' }));
+        throw new Error(errorData.message || `Failed to fetch posts. Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setPosts(data);
+    } catch (err) {
+      console.error('Fetch posts error:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [/* router, isAuthenticated, status */]); // Add dependencies like router, session status if they affect fetching
 
   useEffect(() => {
-    async function fetchPosts() {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await fetch('/api/posts');
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({})); // Try to parse error, default to empty obj
-          throw new Error(errorData.message || `Failed to fetch posts. Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setPosts(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-    // if (status === 'authenticated') { // Only fetch if authenticated (using next-auth example)
+    // For now, fetch posts unconditionally. Add session checks when auth is integrated.
+    // if (status === 'authenticated') { // Using next-auth example
     fetchPosts();
     // } else if (status === 'unauthenticated') {
     //   router.push('/login');
     // }
-  }, [router]); // Add dependencies like router or session status if needed
+  }, [fetchPosts /*, status, router */]); // Dependency: fetchPosts (and session status if used)
 
   const handleDeletePost = async (postId) => {
     if (window.confirm('Are you sure you want to delete this post?')) {
@@ -56,13 +57,14 @@ export default function PostsPage() {
           method: 'DELETE',
         });
         if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
+          const errorData = await response.json().catch(() => ({ message: 'Failed to parse error response.' }));
           throw new Error(errorData.message || 'Failed to delete post');
         }
-        setPosts(posts.filter(post => post.id !== postId));
+        setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
       } catch (err) {
-        console.error('Delete error:', err);
-        alert(`Error: ${err.message}`);
+        console.error('Delete post error:', err);
+        // TODO: Replace alert with a more user-friendly notification system
+        alert(`Error: ${err.message}`); 
       }
     }
   };
@@ -81,8 +83,16 @@ export default function PostsPage() {
           </Link>
         </div>
 
-        {loading && <div className="flex justify-center items-center h-64"><LoadingSpinner /></div>}
-        {error && <p className="text-center text-error-600 bg-error-100 p-4 rounded-md">Error: {error}</p>}
+        {loading && (
+          <div className="flex justify-center items-center h-64">
+            <LoadingSpinner />
+          </div>
+        )}
+        {error && !loading && (
+          <p className="text-center text-error-600 bg-error-100 p-4 rounded-md">
+            Error: {error}
+          </p>
+        )}
         
         {!loading && !error && posts.length === 0 && (
           <div className="text-center py-12 bg-white shadow-md rounded-lg">

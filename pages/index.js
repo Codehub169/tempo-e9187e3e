@@ -10,7 +10,19 @@ export default function Dashboard() {
 
   useEffect(() => {
     // Placeholder for session checking logic
-    // const session = await getSession(); // This will be an async call
+    // async function checkSession() { // if getSession is async
+    //   const session = await getSession();
+    //   if (!session) {
+    //     // router.push('/login'); // Temporarily disable redirect
+    //     console.log('User not logged in, redirect to /login (temporarily disabled)');
+    //     setLoading(false);
+    //   } else {
+    //     setUser(session.user);
+    //     setLoading(false);
+    //   }
+    // }
+    // checkSession();
+
     // For now, simulate a logged-in user for development
     const mockSession = { user: { name: 'Test User' } }; 
     if (!mockSession) { // Replace with !session once getSession is implemented
@@ -22,15 +34,16 @@ export default function Dashboard() {
       setUser(mockSession.user);
       setLoading(false);
     }
-  }, [router]);
+  }, []); // Empty dependency array: runs once on mount, correct for this placeholder
 
   if (loading) {
-    return <p className="text-center text-gray-500">Loading dashboard...</p>;
+    return <p className="text-center text-gray-500 py-10">Loading dashboard...</p>;
   }
 
   // Temporarily allow access even if not "logged in" for dev
-  // if (!user) {
-  //   return null; // Or a message indicating redirection
+  // if (!user && !loading) { // Check !loading to avoid redirecting before session check completes
+  //   // router.push('/login'); // Uncomment when session logic is implemented
+  //   return <p className="text-center text-gray-500 py-10">Redirecting to login...</p>; 
   // }
 
   return (
