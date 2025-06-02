@@ -14,20 +14,24 @@ module.exports = {
         display: ['Poppins', ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        primary: '#3B82F6',        // Blue
-        'primary-light': '#60A5FA', // Light Blue (derived from secondary in plan)
-        accent: '#EC4899',          // Pink
+        primary: {
+          light: '#60A5FA',   // Example: blue-400
+          DEFAULT: '#3B82F6', // Example: blue-500. For classes like bg-primary, text-primary.
+          500: '#3B82F6',     // Explicitly for 'primary-500' suffixed classes, same as DEFAULT.
+          600: '#2563EB',     // Example: blue-600. For classes like 'primary-600'.
+        },
+        accent: '#EC4899',          // Example: Pink
         neutral: {
           'white': '#FFFFFF',
-          'light-gray': '#F9FAFB',
-          'medium-gray': '#E5E7EB',
-          'dark-gray': '#1F2937',
+          'light-gray': '#F9FAFB',    // Example: Tailwind gray-50
+          'medium-gray': '#E5E7EB', // Example: Tailwind gray-200
+          'dark-gray': '#1F2937',     // Example: Tailwind gray-800
           'black': '#000000',
         },
         feedback: {
-          success: '#10B981', // Green
-          warning: '#F59E0B', // Orange
-          error: '#EF4444',   // Red
+          success: '#10B981', // Example: Green
+          warning: '#F59E0B', // Example: Orange
+          error: '#EF4444',   // Example: Red
         },
       },
       borderRadius: {

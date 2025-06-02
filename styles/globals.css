@@ -3,27 +3,29 @@
 @tailwind utilities;
 
 body {
-  @apply bg-neutral-100 text-neutral-800 font-sans;
+  @apply bg-neutral-light-gray text-neutral-dark-gray font-sans;
   font-family: 'Inter', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
-  @apply text-neutral-900;
+  @apply text-neutral-dark-gray;
 }
 
-/* Custom scrollbar for a more modern look (optional) */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-neutral-200;
+  @apply bg-neutral-medium-gray;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary-500 rounded-full;
+  /* Updated to use bg-primary (which maps to primary.DEFAULT, our 500-shade) */
+  /* The original error was for bg-primary-500, which will also work now as primary.500 is defined */
+  @apply bg-primary rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -32,10 +34,10 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Basic focus styles for accessibility */
 *:focus-visible {
-  @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-neutral-100;
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-neutral-light-gray;
 }
 
-/* Ensure Headless UI components work well with Tailwind's preflight */
+/* Ensure Headless UI components or general form elements work well with Tailwind's preflight */
 [type='text'],
 [type='email'],
 [type='url'],
@@ -51,5 +53,5 @@ h1, h2, h3, h4, h5, h6 {
 [multiple],
 textarea,
 select {
-  @apply appearance-none bg-white border-neutral-300 rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500;
+  @apply appearance-none bg-neutral-white border-neutral-medium-gray rounded-md shadow-sm focus:border-primary focus:ring-primary;
 }
