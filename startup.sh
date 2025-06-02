@@ -10,4 +10,4 @@ npx prisma migrate dev --name init
 
 # Start the application on port 9000
 echo "Starting the application on port 9000..."
-npm run dev -- -p 9000
+npm run dev
