@@ -9,7 +9,7 @@ export default function Layout({ children, title = 'Personal Blog Dashboard', hi
 
   // Simulate session check - replace with actual logic e.g. fetching from /api/auth/session
   useEffect(() => {
-    const checkSession = async () => {
+    const checkSession = () => {
       try {
         // In a real app, you'd fetch from an endpoint like /api/auth/session
         // For now, we'll check a simple localStorage item or assume logged in if not on auth pages
@@ -53,7 +53,7 @@ export default function Layout({ children, title = 'Personal Blog Dashboard', hi
   ];
 
   if (hideHeaderFooter) {
-    return <main className="bg-lightGray min-h-screen">{children}</main>;
+    return <main className="bg-neutral-light-gray min-h-screen">{children}</main>;
   }
 
   return (
@@ -64,46 +64,42 @@ export default function Layout({ children, title = 'Personal Blog Dashboard', hi
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="min-h-screen flex flex-col bg-lightGray">
+      <div className="min-h-screen flex flex-col bg-neutral-light-gray">
         <header className="bg-white shadow-md">
           <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
-            <Link href="/">
-              <a className="text-2xl font-bold font-poppins text-primary hover:text-blue-700 transition-colors">
-                MyBlog
-              </a>
+            <Link href="/"
+              className="text-2xl font-bold font-display text-primary hover:text-blue-700 transition-colors">
+              MyBlog
             </Link>
             <div className="space-x-4 flex items-center">
               {isLoggedIn && navLinks.map(link => (
-                <Link key={link.href} href={link.href}>
-                  <a className={`px-3 py-2 rounded-md text-sm font-medium transition-colors 
+                <Link key={link.href} href={link.href}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors 
                                ${router.pathname === link.href 
                                  ? 'bg-primary text-white' 
                                  : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'}`}>
                     {link.label}
-                  </a>
                 </Link>
               ))}
               {isLoggedIn ? (
                 <button
                   onClick={handleLogout}
-                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-red-100 hover:text-error transition-colors border border-gray-300 hover:border-error"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-red-100 hover:text-feedback-error transition-colors border border-gray-300 hover:border-feedback-error"
                 >
                   Logout
                 </button>
               ) : (
                 <>
                   {router.pathname !== '/login' && (
-                     <Link href="/login">
-                        <a className="px-3 py-2 rounded-md text-sm font-medium bg-primary text-white hover:bg-blue-700 transition-colors">
+                     <Link href="/login"
+                        className="px-3 py-2 rounded-md text-sm font-medium bg-primary text-white hover:bg-blue-700 transition-colors">
                             Login
-                        </a>
                     </Link>
                   )}
                   {router.pathname !== '/signup' && (
-                    <Link href="/signup">
-                        <a className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 border border-gray-300 transition-colors">
+                    <Link href="/signup"
+                        className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 border border-gray-300 transition-colors">
                             Sign Up
-                        </a>
                     </Link>
                   )}
                 </>
